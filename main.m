@@ -4,3 +4,5 @@
 %
 %   Breast Cancer Diagnosis via Logistic Regression
 %
+
+load D_wdbc.mat
