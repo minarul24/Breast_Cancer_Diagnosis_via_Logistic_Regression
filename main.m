@@ -7,47 +7,9 @@
 
 load D_wdbc.mat
 
-%some functions
-%
-%f_wdbc
-function f = f_wdbc(w,D,mu)
-P = size(D,2);
-xp = D(1:31,:);
-yp = D(32,:);
-f = (1/P)*(sum(log(1+exp(-yp'.*xp'*w))))+(w'*w)*mu*0.5;
-
-%function g_wdbc
-function g = g_wdbc(w,D,mu)
-P = size(D,2);
-xp = D(1:31,:);
-yp = D(32,:);
-g=mu*w - sum(yp.*xp./(1+exp(yp'.*xp'*w))',2)/P;
-
-%confusion matrix
-function [c,accuracy] = confusion(predicted,actual)
-c = zeros(2,2);
-N = size(predicted,2);
-
-for i = 1:N
-    if predicted(i) == 1 && actual(i) == 1
-        c(1,1) = c(1,1) + 1;
-    end
-    if predicted(i) == 1 && actual(i) == -1
-        c(1,2) = c(1,2) + 1;
-    end
-    if predicted(i) == -1 && actual(i) == 1
-        c(2,1) = c(2,1) + 1;
-    end
-    if predicted(i) == -1 && actual(i) == -1
-        c(2,2) = c(2,2) + 1;
-    end
-accuracy = (trace(c)./sum(c,'all'))*100;
-%end of confusion matrix
-
-
 %main
 D_tr = D_wdbc(:,1:285);
-D_te = D_wbdc(:,286:569);
+D_te = D_wdbc(:,286:569);
 
 y_tr = D_tr(31,:);
 y_te = D_te(31,:);
@@ -65,8 +27,14 @@ for i = 1:30
     X_tr(i,:) = (x_i - m(i))/v(i);
 end
 
+X_te = zeros(30,284);
+for k = 1:30
+    xk = D_te(k,:);
+    X_te(k,:) = (xk - m(k))/v(k);
+end
+
 D_tr = [X_tr;ones(1,285);y_tr];
-D_te = [X_te;ones(1,285);y_te];
+D_te = [X_te;ones(1,284);y_te];
 
 w = zeros(1,31)';
 class_Dte = D_te(1:31,:);
@@ -90,13 +58,13 @@ end
 %Case 2, mu = 0.1 and K = 10
 mu = 0.1;
 K = 10;
-[x_s1, f_s2,k_s2] = grad_desc('f_wdbc','g_wdbc',w,K,D_tr,mu);
+[x_s2, f_s2,k_s2] = grad_desc('f_wdbc','g_wdbc',w,K,D_tr,mu);
 
 sign_Dte_2 = x_s2'*class_Dte;
 D_te_2 = ones(1,284);
 
 for j = 1:284
-    if sign_Dte_1(j) < 0
+    if sign_Dte_2(j) < 0
         D_te_2(j) = -1;
     end
 end
@@ -137,23 +105,47 @@ end
 
 %Displaying Results - Confusion Matrix and Accuracy
 
+fprintf('\n\n *************************************************\n');
 fprintf('Case 1 - mu = 0 & K = 10 \n Confusion Matrix \n')
 disp(c_1);
 fprintf('Accuracy = ');
 disp(acc_1);
-fprintf('\n\n *************************************************');
+fprintf('\n\n *************************************************\n');
 fprintf('Case 2 - mu = 0.1 & K = 10 \n Confusion Matrix \n')
 disp(c_2);
 fprintf('Accuracy = ');
 disp(acc_2);
-fprintf('\n\n *************************************************');
+fprintf('\n\n *************************************************\n');
 fprintf('Case 3 - mu = 0 & K = 30 \n Confusion Matrix \n')
 disp(c_3);
 fprintf('Accuracy = ');
 disp(acc_3);
-fprintf('\n\n *************************************************');
+fprintf('\n\n *************************************************\n');
 fprintf('Case 4 - mu = 0.075 & K = 30 \n Confusion Matrix \n')
 disp(c_4);
 fprintf('Accuracy = ');
 disp(acc_4);
-fprintf('\n\n *************************************************');
+fprintf('\n\n *************************************************\n');
+
+%confusion matrix
+function [c,accuracy] = confusion(predicted,actual)
+c = zeros(2,2);
+N = size(predicted,2);
+
+for i = 1:N
+    if predicted(i) == 1 && actual(i) == 1
+        c(1,1) = c(1,1) + 1;
+    end
+    if predicted(i) == 1 && actual(i) == -1
+        c(1,2) = c(1,2) + 1;
+    end
+    if predicted(i) == -1 && actual(i) == 1
+        c(2,1) = c(2,1) + 1;
+    end
+    if predicted(i) == -1 && actual(i) == -1
+        c(2,2) = c(2,2) + 1;
+    end
+end
+accuracy = (trace(c)./sum(c,'all'))*100;
+end
+%end of confusion matrix
