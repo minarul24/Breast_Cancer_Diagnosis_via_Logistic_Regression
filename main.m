@@ -9,6 +9,20 @@ load D_wdbc.mat
 
 %some functions
 %
+%f_wdbc
+function f = f_wdbc(w,D,mu)
+P = size(D,2);
+xp = D(1:31,:);
+yp = D(32,:);
+f = (1/P)*(sum(log(1+exp(-yp'.*xp'*w))))+(w'*w)*mu*0.5;
+
+%function g_wdbc
+function g = g_wdbc(w,D,mu)
+P = size(D,2);
+xp = D(1:31,:);
+yp = D(32,:);
+g=mu*w - sum(yp.*xp./(1+exp(yp'.*xp'*w))',2)/P;
+
 %confusion matrix
 function [c,accuracy] = confusion(predicted,actual)
 c = zeros(2,2);
@@ -121,7 +135,7 @@ end
 
 [c_4,acc_4] = confusion(D_te_4,y_te);
 
-%Displaying Results
+%Displaying Results - Confusion Matrix and Accuracy
 
 fprintf('Case 1 - mu = 0 & K = 10 \n Confusion Matrix \n')
 disp(c_1);
