@@ -16,6 +16,7 @@ y_te = D_te(31,:);
 X_tr = zeros(30,285);
 %for mean
 m = zeros(1,30);
+%for variance
 v = zeros(1,30);
 
 for i = 1:30
