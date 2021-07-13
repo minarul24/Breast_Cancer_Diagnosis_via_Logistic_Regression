@@ -121,3 +121,25 @@ end
 
 [c_4,acc_4] = confusion(D_te_4,y_te);
 
+%Displaying Results
+
+fprintf('Case 1 - mu = 0 & K = 10 \n Confusion Matrix \n')
+disp(c_1);
+fprintf('Accuracy = ');
+disp(acc_1);
+fprintf('\n\n *************************************************');
+fprintf('Case 2 - mu = 0.1 & K = 10 \n Confusion Matrix \n')
+disp(c_2);
+fprintf('Accuracy = ');
+disp(acc_2);
+fprintf('\n\n *************************************************');
+fprintf('Case 3 - mu = 0 & K = 30 \n Confusion Matrix \n')
+disp(c_3);
+fprintf('Accuracy = ');
+disp(acc_3);
+fprintf('\n\n *************************************************');
+fprintf('Case 4 - mu = 0.075 & K = 30 \n Confusion Matrix \n')
+disp(c_4);
+fprintf('Accuracy = ');
+disp(acc_4);
+fprintf('\n\n *************************************************');
