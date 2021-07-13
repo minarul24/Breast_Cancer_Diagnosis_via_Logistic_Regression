@@ -57,10 +57,10 @@ D_te = [X_te;ones(1,285);y_te];
 w = zeros(1,31)';
 class_Dte = D_te(1:31,:);
 
-%Case 1
+%Case 1, mu = 0 and K = 10
 mu = 0;
 K = 10;
-[x_s1, f_s1,k_s1] = grad_desc('f)wdbc','g_wdbc',w,K,D_tr,mu);
+[x_s1, f_s1,k_s1] = grad_desc('f_wdbc','g_wdbc',w,K,D_tr,mu);
 
 sign_Dte_1 = x_s1'*class_Dte;
 D_te_1 = ones(1,284);
@@ -72,3 +72,52 @@ for j = 1:284
 end
 
 [c_1,acc_1] = confusion(D_te_1,y_te);
+
+%Case 2, mu = 0.1 and K = 10
+mu = 0.1;
+K = 10;
+[x_s1, f_s2,k_s2] = grad_desc('f_wdbc','g_wdbc',w,K,D_tr,mu);
+
+sign_Dte_2 = x_s2'*class_Dte;
+D_te_2 = ones(1,284);
+
+for j = 1:284
+    if sign_Dte_1(j) < 0
+        D_te_2(j) = -1;
+    end
+end
+
+[c_2,acc_2] = confusion(D_te_2,y_te);
+
+%Case 3, mu = 0 and K = 30
+mu = 0;
+K = 30;
+[x_s3, f_s3,k_s3] = grad_desc('f_wdbc','g_wdbc',w,K,D_tr,mu);
+
+sign_Dte_3 = x_s3'*class_Dte;
+D_te_3 = ones(1,284);
+
+for j = 1:284
+    if sign_Dte_3(j) < 0
+        D_te_3(j) = -1;
+    end
+end
+
+[c_3,acc_3] = confusion(D_te_3,y_te);
+
+%Case 4, mu = 0.075 and K = 30
+mu = 0.075;
+K = 30;
+[x_s4, f_s4,k_s4] = grad_desc('f_wdbc','g_wdbc',w,K,D_tr,mu);
+
+sign_Dte_4 = x_s4'*class_Dte;
+D_te_4 = ones(1,284);
+
+for j = 1:284
+    if sign_Dte_4(j) < 0
+        D_te_4(j) = -1;
+    end
+end
+
+[c_4,acc_4] = confusion(D_te_4,y_te);
+
